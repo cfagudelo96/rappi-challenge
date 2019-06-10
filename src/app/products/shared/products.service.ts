@@ -20,12 +20,18 @@ export class ProductsService {
     );
   }
 
-  getProducts(categoryId?: number, sort?: Sort, productsFilter: ProductsFilter = {}): Observable<Product[]> {
+  getProducts(
+    categoryId?: number,
+    sort?: Sort,
+    productsFilter: ProductsFilter = {},
+    productName?: string
+  ): Observable<Product[]> {
     return this.httpClient.get<{ products: Product[] }>('./assets/data/products.json').pipe(
       map(response => {
         let products = this.mapProductsToCamelCase(response.products);
         products = this.filterProductsByCategoryId(products, categoryId);
         products = this.filterProducts(products, productsFilter);
+        products = this.filterProductsByName(products, productName);
         products = this.sortProducts(products, sort);
         return products;
       }),
@@ -63,6 +69,13 @@ export class ProductsService {
     }
     if (productsFilter.quantityTo) {
       products = products.filter(product => product.quantity <= productsFilter.quantityTo);
+    }
+    return products;
+  }
+
+  private filterProductsByName(products: Product[], productName: string) {
+    if (productName) {
+      return products.filter(product => product.name.indexOf(productName.toLowerCase()) >= 0);
     }
     return products;
   }

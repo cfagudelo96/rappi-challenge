@@ -31,9 +31,13 @@
       <brtn-products-sorting (sortProducts)="onSortProducts($event)"></brtn-products-sorting>
     </mat-sidenav>
     <mat-sidenav-content>
-      <h2 style="margin: 1rem;">
-        Productos <small *ngIf="currentCategory">({{ currentCategory.name }})</small>
+      <h2 style="margin: 1rem 0 0.5rem 1rem;">
+        Productos <small *ngIf="currentCategory && currentCategory.id">({{ currentCategory.name }})</small>
       </h2>
+      <mat-form-field *ngIf="leafCategorySelected()" style="margin-left: 1rem">
+        <input matInput [formControl]="productSearchControl" placeholder="Buscar producto..." />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
       <brtn-products-list [products$]="products$"></brtn-products-list>
     </mat-sidenav-content>
   </mat-sidenav-container>

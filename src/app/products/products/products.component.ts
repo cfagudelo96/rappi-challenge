@@ -11,6 +11,8 @@ import { ShoppingCartComponent } from '@rappi-prueba/shopping-cart/shopping-cart
 
 import { Product, ProductsFilter } from '../shared/product';
 import { ProductsService } from '../shared/products.service';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'brtn-products',
@@ -19,6 +21,8 @@ import { ProductsService } from '../shared/products.service';
 })
 export class ProductsComponent implements OnInit {
   @ViewChild(MatSidenav, { static: true }) sidenav: MatSidenav;
+
+  productSearchControl: FormControl;
 
   isMobile = false;
 
@@ -32,6 +36,8 @@ export class ProductsComponent implements OnInit {
 
   currentProductsFilter: ProductsFilter = {};
 
+  currentSearchValue = '';
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private dialog: MatDialog,
@@ -42,6 +48,20 @@ export class ProductsComponent implements OnInit {
       this.isMobile = result.matches;
       this.sidenav.opened = !result.matches;
     });
+    this.initializeProductSearchControl();
+  }
+
+  private initializeProductSearchControl() {
+    this.productSearchControl = new FormControl('');
+    this.productSearchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged((v1, v2) => v1 === v2)
+      )
+      .subscribe(searchValue => {
+        this.currentSearchValue = searchValue;
+        this.loadProducts();
+      });
   }
 
   ngOnInit() {
@@ -52,7 +72,8 @@ export class ProductsComponent implements OnInit {
     this.products$ = this.productsService.getProducts(
       this.currentCategory ? this.currentCategory.id : undefined,
       this.currentSort,
-      this.currentProductsFilter
+      this.currentProductsFilter,
+      this.currentSearchValue
     );
   }
 
@@ -77,5 +98,13 @@ export class ProductsComponent implements OnInit {
 
   getNumberOfProductsInShoppingCart() {
     return this.shoppingCartService.getNumberOfProducts();
+  }
+
+  leafCategorySelected() {
+    return (
+      this.currentCategory &&
+      this.currentCategory.id &&
+      (!this.currentCategory.sublevels || this.currentCategory.sublevels.length === 0)
+    );
   }
 }
