@@ -1,0 +1,26 @@
+<mat-card>
+  <mat-card-title [class.unavailable]="!product.available">{{ product.name }}</mat-card-title>
+  <mat-card-subtitle>{{ product.price }}</mat-card-subtitle>
+  <mat-card-content>
+    <ng-container *ngIf="product.available; else unavailableTemplate">
+      <div>Tenemos disponibles: {{ product.quantity }}</div>
+    </ng-container>
+    <ng-template #unavailableTemplate>
+      <div>¡Ups! Este producto no está disponible</div>
+    </ng-template>
+  </mat-card-content>
+  <mat-card-actions *ngIf="product.available">
+    <button mat-icon-button color="primary" [disabled]="quantityControl.value <= 1" (click)="removeUnit()">
+      <mat-icon>remove_circle_outline</mat-icon>
+    </button>
+    <mat-form-field>
+      <input type="number" [formControl]="quantityControl" matInput placeholder="Cantidad" />
+    </mat-form-field>
+    <button mat-icon-button color="primary" [disabled]="quantityControl.value >= product.quantity" (click)="addUnit()">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <button mat-icon-button color="accent" [disabled]="quantityControl.invalid" (click)="addToShoppingCart()">
+      <mat-icon>add_shopping_cart</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

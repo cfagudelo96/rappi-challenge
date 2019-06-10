@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>
+  Carrito de compras
+</h1>
+<div mat-dialog-content class="mat-typography">
+  <ng-container *ngIf="itemsPresent(); else productsPresent">
+    <brtn-shopping-cart-item-detail
+      *ngFor="let shoppingCartItem of shoppingCartItems"
+      [shoppingCartItem]="shoppingCartItem"
+      (deleteShoppingCartItem)="onDeleteShoppingCartItem($event)"
+      (editShoppingCartItem)="onEditShoppingCartItem($event)"
+    ></brtn-shopping-cart-item-detail>
+    <div>
+      <p>
+        <strong>El precio total es {{ price$ | async | currency }}</strong>
+      </p>
+    </div>
+  </ng-container>
+  <ng-template #productsPresent>
+    <h3>Aún no hay nada en tu carrito</h3>
+    <p>¡Explora nuestros productos y añade los que más te gusten!</p>
+  </ng-template>
+</div>
+<div mat-dialog-actions *ngIf="itemsPresent()">
+  <button mat-button color="accent" (click)="buy()">Comprar</button>
+</div>

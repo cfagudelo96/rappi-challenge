@@ -1,0 +1,35 @@
+<ng-container *ngIf="product; else loadingTemplate">
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-sm="column"
+    fxLayoutGap="16px"
+    fxLayoutAlign="space-between center"
+    style="margin: 8px 0"
+  >
+    <div>
+      <strong>{{ product.name }}</strong> ({{ product.price }} x {{ shoppingCartItem.quantity }})
+    </div>
+    <div>
+      <button mat-icon-button color="primary" [disabled]="quantityControl.value <= 1" (click)="removeUnit()">
+        <mat-icon>remove_circle_outline</mat-icon>
+      </button>
+      <mat-form-field>
+        <input type="number" [formControl]="quantityControl" matInput placeholder="Cantidad" />
+      </mat-form-field>
+      <button
+        mat-icon-button
+        color="primary"
+        [disabled]="quantityControl.value >= product.quantity"
+        (click)="addUnit()"
+      >
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+      <button (click)="onClickDelete()" mat-icon-button color="accent">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>
+<ng-template #loadingTemplate>
+  <p>Loading...</p>
+</ng-template>

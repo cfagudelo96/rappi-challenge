@@ -1,0 +1,19 @@
+<mat-menu #childMenu="matMenu" [overlapTrigger]="false">
+  <ng-container *ngFor="let category of categories">
+    <ng-container *ngIf="category.sublevels && category.sublevels.length > 0; else leafCategory">
+      <button mat-menu-item color="primary" (click)="onCategorySelected(category)" [matMenuTriggerFor]="menu.childMenu">
+        <span>{{ category.name }}</span>
+      </button>
+      <brtn-categories-menu-item
+        #menu
+        [categories]="category.sublevels"
+        (categorySelected)="onCategorySelected($event)"
+      ></brtn-categories-menu-item>
+    </ng-container>
+    <ng-template #leafCategory>
+      <button mat-menu-item (click)="onCategorySelected(category)">
+        <span>{{ category.name }}</span>
+      </button>
+    </ng-template>
+  </ng-container>
+</mat-menu>

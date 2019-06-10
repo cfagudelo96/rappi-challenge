@@ -1,0 +1,8 @@
+<button mat-icon-button *ngIf="menu" [matMenuTriggerFor]="menu.childMenu">
+  <mat-icon>menu</mat-icon>
+</button>
+<brtn-categories-menu-item
+  #menu
+  (categorySelected)="onCategorySelected($event)"
+  [categories]="categories"
+></brtn-categories-menu-item>

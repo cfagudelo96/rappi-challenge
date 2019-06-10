@@ -1,0 +1,36 @@
+<form [formGroup]="filtersForm" (ngSubmit)="submitFiltersForm()">
+  <mat-card class="filters-card">
+    <mat-card-title>Filtrar por...</mat-card-title>
+    <mat-card-content>
+      <label>Precio:</label>
+      <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutAlign="flex-start">
+        <mat-form-field fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+          <input formControlName="priceFrom" matInput type="number" placeholder="Desde..." />
+          <mat-error *ngIf="filtersForm.hasError('invalidPriceRange')">
+            Rango de precios inválido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+          <input formControlName="priceTo" matInput type="number" placeholder="Hasta..." />
+        </mat-form-field>
+      </div>
+      <label>Cantidad:</label>
+      <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutAlign="flex-start">
+        <mat-form-field fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+          <input formControlName="quantityFrom" matInput type="number" placeholder="Desde..." />
+          <mat-error *ngIf="filtersForm.hasError('invalidQuantityRange')">
+            Rango de cantidad inválido
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="0 1 calc(50% - 16px)" fxFlex.lt-sm="100%">
+          <input formControlName="quantityTo" matInput type="number" placeholder="Hasta..." />
+        </mat-form-field>
+      </div>
+      <mat-checkbox formControlName="onlyAvailable">Mostrar únicamente productos disponibles</mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type="submit" color="primary" [disabled]="filtersForm.invalid">Filtrar</button>
+      <button mat-button type="button" (click)="showAllProducts()">Mostrar todos</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

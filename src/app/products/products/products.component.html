@@ -1,0 +1,40 @@
+<div class="container" [class.is-mobile]="isMobile">
+  <mat-toolbar color="primary" class="toolbar">
+    <div class="title-container">
+      <brtn-categories-menu (categorySelected)="onCategorySelected($event)"></brtn-categories-menu>
+      <h1 class="app-name">El Baratón</h1>
+    </div>
+    <div class="action-buttons">
+      <button
+        mat-icon-button
+        (click)="openShoppingCart()"
+        [matBadge]="getNumberOfProductsInShoppingCart() | async"
+        matBadgeColor="accent"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="isMobile" (click)="sidenav.toggle()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="isMobile ? toolbarMargin : 0">
+    <mat-sidenav
+      #sidenav
+      [mode]="isMobile ? 'over' : 'side'"
+      [fixedInViewport]="isMobile"
+      [fixedTopGap]="toolbarMargin"
+      [opened]="!isMobile"
+      [disableClose]="!isMobile"
+    >
+      <brtn-products-filters (filterProducts)="onFilterProducts($event)"></brtn-products-filters>
+      <brtn-products-sorting (sortProducts)="onSortProducts($event)"></brtn-products-sorting>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <h2 style="margin: 1rem;">
+        Productos <small *ngIf="currentCategory">({{ currentCategory.name }})</small>
+      </h2>
+      <brtn-products-list [products$]="products$"></brtn-products-list>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

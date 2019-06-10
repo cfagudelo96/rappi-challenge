@@ -1,0 +1,10 @@
+<mat-card class="sorting-card">
+  <mat-card-title>Ordenar por...</mat-card-title>
+  <mat-card-content>
+    <mat-chip-list matSort (matSortChange)="onMatSortChange($event)">
+      <mat-chip mat-sort-header="price">Precio</mat-chip>
+      <mat-chip mat-sort-header="quantity">Cantidad</mat-chip>
+      <mat-chip mat-sort-header="available">Disponibles</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+</mat-card>
